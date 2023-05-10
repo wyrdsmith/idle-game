@@ -14,7 +14,7 @@ export default {
         type: 'skeleton',
         role: 'labor',
         resource: 'gold',
-        boost: 0.01,
+        boost: 1,
       })
     );
     this.target.updateMinionGoldRegenRateBoost();
