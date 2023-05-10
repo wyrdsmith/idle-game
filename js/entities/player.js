@@ -217,10 +217,15 @@ export default class Player {
 
   addSpell(spell) {
     spell.caster = this;
-    spell.target = 'caster' ? this : this.foe;
+    spell.target = spell.target == 'caster' ? this : this.foe;
     this.spells[spell.name] = spell;
   }
   castSpell(spell) {
     this.spells[spell].cast();
+  }
+
+  addFoe(foe) {
+    foe.target = this;
+    this.foe = foe;
   }
 }

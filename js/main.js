@@ -3,12 +3,12 @@ import Clock from './entities/clock.js';
 var gameclock = new Clock();
 
 import Player from './entities/player.js';
-export var necromancer = new Player(gameclock);
+var necromancer = new Player(gameclock);
 
 import Enemy from './entities/enemy.js';
 import enemies from './enemies/all.js';
 
-export var foe = new Enemy(gameclock, enemies[0]);
+necromancer.addFoe(new Enemy(gameclock, enemies[0]));
 
 import Spell from './entities/spell.js';
 import spells from './spells/all.js';
@@ -25,14 +25,30 @@ var playerStats = new Observer(gameclock, () => {
 });
 
 var enemyStats = new Observer(gameclock, () => {
-  $('#enemyName').html(foe.name + ': ');
-  $('#enemyHealth').html(foe.getHealth() + ' HP');
+  $('#enemyName').html(necromancer.foe.name + ': ');
+  $('#enemyHealth').html(necromancer.foe.getHealth() + ' HP');
 });
 
-function start() {
+$('#gameStart').click(function () {
   $('#start').hide();
   $('#game').show();
-  gameclock.start();
-}
 
-$('#gameStart').click(start);
+  for (let spell in necromancer.spells) {
+    $('#spells').append(
+      '<button class="spell" spell-name="' +
+        necromancer.spells[spell].name +
+        '">Cast ' +
+        necromancer.spells[spell].name +
+        '</button>'
+    );
+    $('#spells .spell[spell-name="' + spell + '"]').click(function () {
+      necromancer.castSpell($(this).attr('spell-name'));
+    });
+  }
+
+  $('#manaStone').click(function () {
+    necromancer.modMana(1);
+  });
+
+  gameclock.start();
+});

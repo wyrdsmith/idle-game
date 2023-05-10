@@ -10,7 +10,7 @@
   display: none;
 }
 
-#stats>span {
+#stats > span {
   margin-right: 20px;
 }
 
@@ -33,4 +33,14 @@
 
 #minions .minion:nth-child(2n) {
   background-color: lightgrey;
+}
+
+#actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+#spells {
+  display: flex;
+  flex-direction: column;
 }

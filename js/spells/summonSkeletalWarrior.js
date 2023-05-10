@@ -1,3 +1,5 @@
+import Minion from '../entities/minion.js';
+
 export default {
   target: 'foe',
   name: 'Summon Skeletal Warrior',
