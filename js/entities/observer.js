@@ -1,5 +1,6 @@
 export default class Observer {
   constructor(clock, task) {
+    this.clock = clock;
     this.createdTick = clock.getTick();
     this.currTick = clock.getTick();
     this.lastTick = clock.getTick();
@@ -19,8 +20,8 @@ export default class Observer {
   }
 
   async step() {
-    this.currTick = clock.getTick();
-    if (this.lastTick != this.currTick && clock.running) {
+    this.currTick = this.clock.getTick();
+    if (this.lastTick != this.currTick && this.clock.running) {
       this.lastTick = this.currTick;
       this.task();
     }

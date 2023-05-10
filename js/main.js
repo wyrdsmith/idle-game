@@ -1,6 +1,6 @@
 import Observer from './entities/observer.js';
 import Clock from './entities/clock.js';
-export var gameclock = new Clock();
+var gameclock = new Clock();
 
 import Player from './entities/player.js';
 export var necromancer = new Player(gameclock);
@@ -29,8 +29,10 @@ var enemyStats = new Observer(gameclock, () => {
   $('#enemyHealth').html(foe.getHealth() + ' HP');
 });
 
-export function start() {
+function start() {
   $('#start').hide();
   $('#game').show();
   gameclock.start();
 }
+
+$('#gameStart').click(start);
