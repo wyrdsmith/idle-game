@@ -1,4 +1,4 @@
-var summonSkeletalLaborer = new Spell({
+export default {
   target: 'caster',
   name: 'Summon Skeletal Laborer',
   details:
@@ -17,4 +17,4 @@ var summonSkeletalLaborer = new Spell({
     );
     this.target.updateMinionGoldRegenRateBoost();
   },
-});
+};

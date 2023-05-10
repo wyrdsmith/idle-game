@@ -10,7 +10,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script>
+      import start from 'js/main.js';
+    </script>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -30,10 +33,10 @@
       <br />
       <div id="actions">
         <button onclick="necromancer.modMana(1)">Gain 1 Mana</button>
-        <button onclick="summonSkeletalLaborer.cast()">
+        <button onclick="necromancer.castSpell('summonSkeletalLaborer')">
           Summon Skeletal Laborer
         </button>
-        <button onclick="summonSkeletalWarrior.cast()">
+        <button onclick="necromancer.castSpell('summonSkeletalWarrior')">
           Summon Skeletal Warrior
         </button>
       </div>

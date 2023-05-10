@@ -1,5 +1,7 @@
-class Player {
-  constructor() {
+import Observer from './observer.js';
+
+export default class Player {
+  constructor(clock) {
     this.health = 0; // The amount of health the player currently has
     this.maxHealth = 100;
     this.mana = 0; // The amount of mana the player currently has
@@ -20,13 +22,13 @@ class Player {
 
     this.foe = null;
 
-    this.healthRegen = new Observer(() => {
+    this.healthRegen = new Observer(clock, () => {
       this.regenHealth();
     });
-    this.manaRegen = new Observer(() => {
+    this.manaRegen = new Observer(clock, () => {
       this.regenMana();
     });
-    this.goldRegen = new Observer(() => {
+    this.goldRegen = new Observer(clock, () => {
       this.regenGold();
     });
   }
@@ -215,6 +217,10 @@ class Player {
 
   addSpell(spell) {
     spell.caster = this;
-    this.spells.push(spell);
+    spell.target = 'caster' ? this : this.foe;
+    this.spells[spell.name] = spell;
+  }
+  castSpell(spell) {
+    this.spells[spell].cast();
   }
 }

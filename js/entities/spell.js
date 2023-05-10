@@ -1,4 +1,4 @@
-class Spell {
+export default class Spell {
   constructor(details) {
     this.caster = details.caster || null;
     this.target = details.target || null;

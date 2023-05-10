@@ -1,4 +1,4 @@
-class Observer {
+export default class Observer {
   constructor(clock, task) {
     this.createdTick = clock.getTick();
     this.currTick = clock.getTick();

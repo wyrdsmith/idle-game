@@ -1,4 +1,4 @@
-class Clock {
+export default class Clock {
   constructor() {
     this.tick = 0; // current tick the clock is on
     this.inc = 1; // how many ticks get incremented to with each tock

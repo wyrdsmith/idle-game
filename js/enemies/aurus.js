@@ -1,5 +1,4 @@
-var arus = new Enemy({
+export default {
   name: 'King Aurus',
   health: 1000,
-  target: necromancer,
-});
+};

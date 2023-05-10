@@ -1,4 +1,4 @@
-var summonSkeletalWarrior = new Spell({
+export default {
   target: 'foe',
   name: 'Summon Skeletal Warrior',
   details:
@@ -16,4 +16,4 @@ var summonSkeletalWarrior = new Spell({
     );
     this.target.updateHealthLossRate();
   },
-});
+};
