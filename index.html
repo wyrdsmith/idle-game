@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Home</title>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<script src="js/require.js" data-main="js/script.js"></script>
-		<script src="js/jquery.js"></script>
-		<link rel="stylesheet" href="css/style.css" />
-	</head>
-	<body>
-		<div id="start">
-			<button onclick="start()">Start Game</button>
-		</div>
-		<div id="game">
-			<div id="stats">
-				<div>
-					<span id="health"></span>
-					<span id="mana"></span>
-					<span id="gold"></span>
-				</div>
-				<br />
-				<div id="minions"></div>
-			</div>
-			<br />
-			<div id="actions">
-				<button onclick="necromancer.modMana(1)">Gain 1 Mana</button>
-				<button onclick="summonSkeletalLaborer.cast()">
-					Summon Skeletal Laborer
-				</button>
-				<button onclick="summonSkeletalWarrior.cast()">
-					Summon Skeletal Warrior
-				</button>
-			</div>
-			<br />
-			<div id="enemyStats">
-				<span id="enemyName"></span><span id="enemyHealth"></span>
-			</div>
-		</div>
-	</body>
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+      integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="start">
+      <button onclick="start()">Start Game</button>
+    </div>
+    <div id="game">
+      <div id="stats">
+        <div>
+          <span id="health"></span>
+          <span id="mana"></span>
+          <span id="gold"></span>
+        </div>
+        <br />
+        <div id="minions"></div>
+      </div>
+      <br />
+      <div id="actions">
+        <button onclick="necromancer.modMana(1)">Gain 1 Mana</button>
+        <button onclick="summonSkeletalLaborer.cast()">
+          Summon Skeletal Laborer
+        </button>
+        <button onclick="summonSkeletalWarrior.cast()">
+          Summon Skeletal Warrior
+        </button>
+      </div>
+      <br />
+      <div id="enemyStats">
+        <span id="enemyName"></span><span id="enemyHealth"></span>
+      </div>
+    </div>
+  </body>
 </html>
