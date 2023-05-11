@@ -3,6 +3,7 @@ import Minion from '../entities/minion.js';
 export default {
   target: 'caster',
   name: 'Summon Skeletal Mage',
+  type: 'Summons',
   details:
     'Summons the lowest level of undead spellcaster to toil for you. Increases the rate of mana earned by 1 per skeletal mage summoned.',
   manaCost: 15,

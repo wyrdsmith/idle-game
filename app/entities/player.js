@@ -23,10 +23,10 @@ export default class Player {
     this.minionHealthRegenRateBoost = 0;
     this.minionManaRegenRateBoost = 0;
     this.minionGoldRegenRateBoost = 0;
-    this.minionDamageRate = 0;
+    this.minionHealthDamageRate = 0;
     this.minionsAttackFoe = new Observer(clock, () => {
       if (this.foe) {
-        this.foe.loseHealth(this.getMinionDamageRate());
+        this.foe.loseHealth(this.getMinionHealthDamageRate());
       }
     });
 
@@ -266,40 +266,65 @@ export default class Player {
     }
     return { roles: roles, roleCounts: roleCounts };
   }
-  getMinionDamageRate() {
-    return this.minionDamageRate;
+  getMinionHealthDamageRate() {
+    return this.minionHealthDamageRate;
   }
-  setMinionDamageRate(amount) {
-    this.minionDamageRate = amount;
+  setMinionHealthDamageRate(amount) {
+    this.minionHealthDamageRate = amount;
   }
   addMinion(minion) {
     this.minions.push(minion);
-    this.updateMinionRegenRateBoosts();
+    this.updateMinionRateBoosts();
     this.printMinions();
   }
-  updateMinionRegenRateBoosts() {
+  resetMinionRateBoosts() {
     this.setMinionGoldRegenRateBoost(0);
     this.setMinionManaRegenRateBoost(0);
     this.setMinionHealthRegenRateBoost(0);
-    this.setMinionDamageRate(0);
+    this.setMinionHealthDamageRate(0);
+  }
+  updateMinionRateBoosts() {
+    this.resetMinionRateBoosts();
     for (let minion of this.minions) {
-      if (minion.role == 'labor' && minion.resource == 'gold') {
-        this.setMinionGoldRegenRateBoost(
-          this.getMinionGoldRegenRateBoost() + minion.boost
-        );
-      } else if (minion.role == 'labor' && minion.resource == 'mana') {
-        this.setMinionManaRegenRateBoost(
-          this.getMinionManaRegenRateBoost() + minion.boost
-        );
-      } else if (minion.role == 'labor' && minion.resource == 'health') {
-        this.setMinionHealthRegenRateBoost(
-          this.getMinionHealthRegenRateBoost() + minion.boost
-        );
-      } else if (minion.role == 'warrior') {
-        this.setMinionDamageRate(this.getMinionDamageRate() + minion.boost);
-      } else {
-        /* do nothing */
-      }
+      this.updateMinionRateBoost(minion.role, minion.resource, minion.boost);
+    }
+  }
+  updateMinionRateBoost(role, resource, boost) {
+    switch (role) {
+      case 'labor':
+        switch (resource) {
+          case 'health':
+            this.setMinionHealthRegenRateBoost(
+              this.getMinionHealthRegenRateBoost() + boost
+            );
+            break;
+          case 'mana':
+            this.setMinionManaRegenRateBoost(
+              this.getMinionManaRegenRateBoost() + boost
+            );
+            break;
+          case 'gold':
+            this.setMinionGoldRegenRateBoost(
+              this.getMinionGoldRegenRateBoost() + boost
+            );
+            break;
+          default:
+            break;
+        }
+        break;
+      case 'warrior':
+        switch (resource) {
+          case 'health':
+            this.setMinionHealthDamageRate(
+              this.getMinionHealthDamageRate() + boost
+            );
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
     }
   }
 

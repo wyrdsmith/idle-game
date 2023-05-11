@@ -3,6 +3,7 @@ export default class Spell {
     this.caster = details.caster || null;
     this.target = details.target || null;
     this.name = details.name;
+    this.type = details.type;
     this.description = details.description;
     this.manaCost = details.manaCost || 0;
     this.healthCost = details.healthCost || 0;
