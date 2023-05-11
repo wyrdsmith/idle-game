@@ -10,31 +10,25 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script type="module" src="js/main.js"></script>
-    <link rel="stylesheet" href="css/style.css" />
+    <script type="module" src="app/main.js"></script>
+    <link rel="stylesheet" href="style/style.css" />
   </head>
   <body>
     <div id="start">
       <button id="gameStart">Start Game</button>
     </div>
     <div id="game">
-      <div id="stats">
-        <div>
-          <span id="health"></span>
-          <span id="mana"></span>
-          <span id="gold"></span>
+      <div id="playerStats"></div>
+      <div id="battlefield">
+        <div id="playerMinions"></div>
+        <div id="enemyStats">
+          <span id="enemyName"></span>
+          <span id="enemyHealth"></span>
         </div>
-        <br />
-        <div id="minions"></div>
       </div>
-      <br />
-      <div id="actions">
+      <div id="playerActions">
         <button id="manaStone">Gain 1 Mana</button>
-        <div id="spells"></div>
-      </div>
-      <br />
-      <div id="enemyStats">
-        <span id="enemyName"></span><span id="enemyHealth"></span>
+        <div id="playerSpells"></div>
       </div>
     </div>
   </body>

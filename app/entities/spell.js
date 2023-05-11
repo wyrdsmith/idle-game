@@ -6,16 +6,19 @@ export default class Spell {
     this.description = details.description;
     this.manaCost = details.manaCost || 0;
     this.healthCost = details.healthCost || 0;
+    this.goldCost = details.goldCost || 0;
     this.effect = details.effect;
   }
 
   cast() {
     if (
       this.caster.getMana() >= this.manaCost &&
-      this.caster.getHealth() >= this.healthCost
+      this.caster.getHealth() > this.healthCost &&
+      this.caster.getGold() >= this.goldCost
     ) {
       this.caster.modMana(-1 * this.manaCost);
       this.caster.modHealth(-1 * this.healthCost);
+      this.caster.modGold(-1 * this.goldCost);
       this.effect();
     }
   }

@@ -8,14 +8,13 @@ export default {
   manaCost: 30,
   healthCost: 10,
   effect: function () {
-    this.caster.minions.push(
+    this.caster.addMinion(
       new Minion({
         name: 'Skeletal Warrior',
         type: 'skeleton',
         role: 'warrior',
-        damage: 1,
+        boost: 1,
       })
     );
-    this.target.updateHealthLossRate();
   },
 };
