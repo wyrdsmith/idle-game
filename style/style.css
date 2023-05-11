@@ -84,7 +84,17 @@
 
 #playerSpells {
   display: flex;
+  justify-content: space-between;
+}
+
+#playerSpells .spellList {
+  display: flex;
   flex-direction: column;
+  width: 50%;
+  margin-right: 10px;
+}
+#playerSpells .spellList:last-child {
+  margin-right: 0px;
 }
 
 #playerSpells .spell {

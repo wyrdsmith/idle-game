@@ -18,6 +18,7 @@ export default class Player {
     this.canRegenGold = true;
 
     this.foe = null;
+    this.updateFoeStats = null;
 
     this.minions = [];
     this.minionHealthRegenRateBoost = 0;
@@ -359,9 +360,19 @@ export default class Player {
     this.playerStatsContainer.html(output);
   }
   printSpells() {
-    let output = '';
+    let spellTypes = [];
+    console.log(this.spells);
     for (let spell in this.spells) {
-      output +=
+      if (
+        spellTypes[this.spells[spell].type] == null ||
+        spellTypes[this.spells[spell].type].length == 0
+      ) {
+        spellTypes[this.spells[spell].type] = [];
+        spellTypes[this.spells[spell].type].push(
+          '<h3>' + this.spells[spell].type + '</h3>'
+        );
+      }
+      let spellButton =
         '<button class="spell" spell-name="' +
         this.spells[spell].name +
         '" title="Mana Cost: ' +
@@ -373,6 +384,15 @@ export default class Player {
         '">Cast ' +
         this.spells[spell].name +
         '</button>';
+      spellTypes[this.spells[spell].type].push(spellButton);
+    }
+    let output = '';
+    for (let spellType in spellTypes) {
+      output += '<div id="' + spellType + '" class="spellList">';
+      for (let spellButton of spellTypes[spellType]) {
+        output += spellButton;
+      }
+      output += '</div>';
     }
     this.spellsContainer.html(output);
     this.spellsContainer.children('.spell').click(($event) => {
@@ -394,5 +414,12 @@ export default class Player {
   addFoe(foe) {
     foe.target = this;
     this.foe = foe;
+    this.updateFoeStats = new Observer(foe.clock, () => {
+      this.printFoeStats();
+    });
+  }
+  printFoeStats() {
+    $('#enemyName').html(this.foe.name + ': ');
+    $('#enemyHealth').html(this.foe.getHealth() + ' HP');
   }
 }

@@ -13,11 +13,6 @@ necromancer.addFoe(new Enemy(gameclock, enemies[0]));
 import Spell from './entities/spell.js';
 import allSpells from './spells/all.js';
 
-var enemyStats = new Observer(gameclock, () => {
-  $('#enemyName').html(necromancer.foe.name + ': ');
-  $('#enemyHealth').html(necromancer.foe.getHealth() + ' HP');
-});
-
 $('#gameStart').click(function () {
   $('#start').hide();
   $('#game').show();
