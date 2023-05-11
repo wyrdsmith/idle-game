@@ -109,7 +109,11 @@ export default class Player {
     return this.mana;
   }
   modMana(amount) {
-    this.setMana(this.getMana() + amount);
+    if (this.getMana() + amount > this.getMaxMana()) {
+      this.setMana(this.getMaxMana());
+    } else {
+      this.setMana(this.getMana() + amount);
+    }
   }
   getMinionManaRegenRateBoost() {
     return this.minionManaRegenRateBoost;
@@ -156,7 +160,7 @@ export default class Player {
     this.manaRechargeRate = amount;
   }
   rechargeMana() {
-    if (this.canRegenMana) {
+    if (this.canRegenMana && this.getMana() < this.getMaxMana()) {
       this.modMana(this.getManaRechargeRate());
     }
   }
@@ -361,7 +365,6 @@ export default class Player {
   }
   printSpells() {
     let spellTypes = [];
-    console.log(this.spells);
     for (let spell in this.spells) {
       if (
         spellTypes[this.spells[spell].type] == null ||
@@ -395,7 +398,7 @@ export default class Player {
       output += '</div>';
     }
     this.spellsContainer.html(output);
-    this.spellsContainer.children('.spell').click(($event) => {
+    this.spellsContainer.find('.spell').click(($event) => {
       this.castSpell($($event.target).attr('spell-name'));
     });
   }
