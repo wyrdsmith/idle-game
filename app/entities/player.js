@@ -18,11 +18,12 @@ export default class Player {
     this.canRegenGold = true;
 
     this.foe = null;
-    this.updateFoeStats = null;
+    this.foeUpdate = null;
 
     this.minions = [];
     this.minionHealthRegenRateBoost = 0;
     this.minionManaRegenRateBoost = 0;
+    this.minionManaRechargeRateBoost = 0;
     this.minionGoldRegenRateBoost = 0;
     this.minionHealthDamageRate = 0;
     this.minionsAttackFoe = new Observer(clock, () => {
@@ -34,6 +35,7 @@ export default class Player {
     this.spells = [];
     this.spellHealthRegenRateBoost = 0;
     this.spellManaRegenRateBoost = 0;
+    this.spellManaRechargeRateBoost = 0;
     this.spellGoldRegenRateBoost = 0;
 
     this.playerStatsContainer = $('#playerStats');
@@ -43,14 +45,15 @@ export default class Player {
       this.regenMana();
       this.regenGold();
     });
-    this.updateStats = new Observer(clock, () => {
-      this.printStats();
-      this.printMinions();
-    });
     this.manaStone = $('#manaStone');
     this.manaStone.click(() => {
       this.rechargeMana();
       this.printStats();
+    });
+    this.updateStats = new Observer(clock, () => {
+      this.printStats();
+      this.printMinions();
+      this.printManaStone();
     });
     this.spellsContainer = $('#playerSpells');
   }
@@ -142,6 +145,13 @@ export default class Player {
   getCanRegenMana() {
     return this.canRegenMana;
   }
+  getTotalManaRegenRate() {
+    return (
+      this.getManaRegenRate() +
+      this.getMinionManaRegenRateBoost() +
+      this.getSpellManaRegenRateBoost()
+    );
+  }
 
   setMaxMana(amount) {
     this.maxMana = amount;
@@ -160,9 +170,32 @@ export default class Player {
     this.manaRechargeRate = amount;
   }
   rechargeMana() {
-    if (this.canRegenMana && this.getMana() < this.getMaxMana()) {
-      this.modMana(this.getManaRechargeRate());
+    if (this.getCanRegenMana() && this.getMana() < this.getMaxMana()) {
+      this.modMana(
+        this.getManaRechargeRate() +
+          this.getMinionManaRechargeRateBoost() +
+          this.getSpellManaRechargeRateBoost()
+      );
     }
+  }
+  getMinionManaRechargeRateBoost() {
+    return this.minionManaRechargeRateBoost;
+  }
+  setMinionManaRechargeRateBoost(amount) {
+    this.minionManaRechargeRateBoost = amount;
+  }
+  getSpellManaRechargeRateBoost() {
+    return this.spellManaRechargeRateBoost;
+  }
+  setSpellManaRechargeRateBoost(amount) {
+    this.spellManaRechargeRateBoost = amount;
+  }
+  getTotalManaRechargeRate() {
+    return (
+      this.getManaRechargeRate() +
+      this.getMinionManaRechargeRateBoost() +
+      this.getSpellManaRechargeRateBoost()
+    );
   }
 
   setGold(amount) {
@@ -285,16 +318,22 @@ export default class Player {
   resetMinionRateBoosts() {
     this.setMinionGoldRegenRateBoost(0);
     this.setMinionManaRegenRateBoost(0);
+    this.setMinionManaRechargeRateBoost(0);
     this.setMinionHealthRegenRateBoost(0);
     this.setMinionHealthDamageRate(0);
   }
   updateMinionRateBoosts() {
     this.resetMinionRateBoosts();
     for (let minion of this.minions) {
-      this.updateMinionRateBoost(minion.role, minion.resource, minion.boost);
+      this.updateMinionRateBoost(
+        minion.role,
+        minion.resource,
+        minion.means,
+        minion.boost
+      );
     }
   }
-  updateMinionRateBoost(role, resource, boost) {
+  updateMinionRateBoost(role, resource, means, boost) {
     switch (role) {
       case 'labor':
         switch (resource) {
@@ -304,9 +343,23 @@ export default class Player {
             );
             break;
           case 'mana':
-            this.setMinionManaRegenRateBoost(
-              this.getMinionManaRegenRateBoost() + boost
-            );
+            switch (means) {
+              case 'regen':
+                this.setMinionManaRegenRateBoost(
+                  this.getMinionManaRegenRateBoost() + boost
+                );
+                break;
+              case 'recharge':
+                this.setMinionManaRechargeRateBoost(
+                  this.getMinionManaRechargeRateBoost() + boost
+                );
+                break;
+              default:
+                this.setMinionManaRegenRateBoost(
+                  this.getMinionManaRegenRateBoost() + boost
+                );
+                break;
+            }
             break;
           case 'gold':
             this.setMinionGoldRegenRateBoost(
@@ -347,20 +400,29 @@ export default class Player {
     output +=
       '<div id="health" style="background-size:' +
       (this.health / this.maxHealth) * 100 +
-      '% 100%">' +
+      '% 100%">Health: ' +
       Math.round(this.health) +
       '/' +
       this.maxHealth +
+      ' (' +
+      Math.round(
+        (this.healthRegenRate +
+          this.minionHealthRegenRateBoost -
+          (this.foe ? this.foe.getDPS() : 0)) *
+          100
+      ) /
+        100 +
+      '/s)' +
       '</div>';
     output +=
       '<div id="mana" style="background-size:' +
       (this.mana / this.maxMana) * 100 +
-      '% 100%">' +
+      '% 100%">Mana: ' +
       Math.round(this.mana) +
       '/' +
       this.maxMana +
       '</div>';
-    output += '<div id="gold">' + Math.round(this.gold) + '</div>';
+    output += '<div id="gold">Gold: ' + Math.round(this.gold) + '</div>';
     this.playerStatsContainer.html(output);
   }
   printSpells() {
@@ -402,6 +464,11 @@ export default class Player {
       this.castSpell($($event.target).attr('spell-name'));
     });
   }
+  printManaStone() {
+    this.manaStone.html(
+      'Gain ' + this.getTotalManaRechargeRate().toString() + ' mana'
+    );
+  }
 
   addSpell(spell) {
     spell.caster = this;
@@ -417,12 +484,18 @@ export default class Player {
   addFoe(foe) {
     foe.target = this;
     this.foe = foe;
-    this.updateFoeStats = new Observer(foe.clock, () => {
+    this.foeUpdate = new Observer(foe.clock, () => {
       this.printFoeStats();
+      this.foeAttacks();
+      this.foe.incDPS();
     });
   }
   printFoeStats() {
     $('#enemyName').html(this.foe.name + ': ');
     $('#enemyHealth').html(this.foe.getHealth() + ' HP');
+    $('#enemyDPS').html(Math.floor(this.foe.getDPS()) + ' DPS');
+  }
+  foeAttacks() {
+    this.modHealth(-1 * this.foe.getDPS());
   }
 }

@@ -5,7 +5,7 @@ export default {
   name: 'Summon Skeletal Mage',
   type: 'Summons',
   details:
-    'Summons the lowest level of undead spellcaster to toil for you. Increases the rate of mana earned by 1 per skeletal mage summoned.',
+    'Summons the lowest level of undead spellcaster to toil for you. Increases the rate of mana earned by clicking the mana stone by 1 per Skeletal Mage.',
   manaCost: 15,
   healthCost: 15,
   goldCost: 15,
@@ -16,6 +16,7 @@ export default {
         type: 'skeleton',
         role: 'labor',
         resource: 'mana',
+        means: 'recharge',
         boost: 1,
       })
     );

@@ -15,6 +15,7 @@ export default {
         type: 'skeleton',
         role: 'labor',
         resource: 'gold',
+        means: 'mining',
         boost: 1,
       })
     );

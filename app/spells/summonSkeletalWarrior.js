@@ -15,6 +15,7 @@ export default {
         type: 'skeleton',
         role: 'warrior',
         resource: 'health',
+        means: 'melee',
         boost: 1,
       })
     );

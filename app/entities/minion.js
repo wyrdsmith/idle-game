@@ -4,6 +4,7 @@ export default class Minion {
     this.type = minion.type;
     this.role = minion.role;
     this.resource = minion.resource;
+    this.means = minion.means;
     this.boost = minion.boost;
   }
 }

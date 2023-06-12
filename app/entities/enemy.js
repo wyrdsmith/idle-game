@@ -6,6 +6,8 @@ export default class Enemy {
     this.name = enemy.name;
     this.health = enemy.health;
     this.target = enemy.target;
+    this.dps = 0.01;
+    this.damageIncRate = 0.01;
   }
 
   getHealth() {
@@ -16,5 +18,20 @@ export default class Enemy {
   }
   loseHealth(amount) {
     this.modHealth(-1 * amount);
+  }
+  getDPS() {
+    return this.dps;
+  }
+  setDPS(amount) {
+    this.dps = amount;
+  }
+  getDamageIncRate() {
+    return this.damageIncRate;
+  }
+  setDamageIncRate(amount) {
+    this.damageIncRate = amount;
+  }
+  incDPS() {
+    this.setDPS(this.getDPS() + this.getDamageIncRate());
   }
 }
